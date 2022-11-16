@@ -2,6 +2,7 @@
 
 import urllib.request
 import json
+from us_state_abbrev import us_state_to_abbrev
 
 
 print("Content-type: text/html")
@@ -21,6 +22,15 @@ print('<head>')
 print('<title>Weather Map Lab by Your last name</title>')
 print('<script>window.onload = function() {')
 print('document.getElementById("CO").setAttribute("fill", "#CFB87C");')
+
+for statename in us_state_to_abbrev:
+    print(f"if(document.getElementById('{us_state_to_abbrev[statename]}'))")
+    print(f"document.getElementById('{us_state_to_abbrev[statename]}').setAttribute('fill', '#CFB87C');")
+    print(f"console.log('{us_state_to_abbrev[statename]}')")
+
+
+
+
 print('};</script>')
 print("</head>")
 
@@ -146,10 +156,6 @@ print('''    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     </svg>
 ''')
 print('</body>')
-
-# print("<header>")
-
-# print("</header>")
 print('</html>')
 
 
