@@ -28,7 +28,11 @@ print('<script>window.onload = function() {')
 # https://api.weather.gov/points/{latitude},{longitude}
 states_json = json.load(open('cgi-bin/USstates_avg_latLong.json'))
 
+# submission page says to only let it do 5
+stopAt5 = 0
 for jsonObject in states_json:
+    if(stopAt5 == 5):
+        break
     state = jsonObject['state']
     latitude = jsonObject['latitude']
     longitude = jsonObject['longitude']
@@ -36,6 +40,7 @@ for jsonObject in states_json:
         
     temp_url = f"https://api.weather.gov/points/{latitude},{longitude}"
     r = urllib.request.urlopen(temp_url)
+    # from https://stackoverflow.com/questions/13921910/python-urllib2-receive-json-response-from-url
     data = json.loads(r.read().decode(r.info().get_param('charset') or 'utf-8'))
     
     # time.sleep(5)
@@ -46,7 +51,7 @@ for jsonObject in states_json:
         r2 = urllib.request.urlopen(full_url)
     except:
         continue
-
+    # from https://stackoverflow.com/questions/13921910/python-urllib2-receive-json-response-from-url
     forecastData = json.loads(r2.read().decode(r2.info().get_param('charset') or 'utf-8'))
     temperature = forecastData['properties']['periods'][0]['temperature']
     print(f"console.log('{temperature}')")
@@ -67,6 +72,7 @@ for jsonObject in states_json:
     print(f"if(document.getElementById('{us_state_to_abbrev[state]}'))")
     print(f"document.getElementById('{us_state_to_abbrev[state]}').setAttribute('fill', '{color}');")
     
+    stopAt5 += 1
     # time.sleep(5)    
     
 # deprecated
