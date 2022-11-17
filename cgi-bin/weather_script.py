@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# Connor Monk
 
 import urllib.request
 import json
@@ -73,9 +74,6 @@ for jsonObject in states_json:
 #     print(f"if(document.getElementById('{us_state_to_abbrev[statename]}'))")
 #     print(f"document.getElementById('{us_state_to_abbrev[statename]}').setAttribute('fill', '#CFB87C');")
     # print(f"console.log('{us_state_to_abbrev[statename]}')")
-
-
-
 
 print('};</script>')
 print("</head>")
