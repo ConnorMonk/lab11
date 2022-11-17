@@ -11,22 +11,59 @@ print() # This extra newline is important!
 print("<html>")
 
 # from https://stackoverflow.com/questions/13921910/python-urllib2-receive-json-response-from-url
-url = 'https://api.weather.gov/gridpoints/BOU/53,74/forecast'
-# url = 'http://127.0.0.1:8000/weather.html'
-r = urllib.request.urlopen(url)
-data = json.loads(r.read().decode(r.info().get_param('charset') or 'utf-8'))
+# url = 'https://api.weather.gov/gridpoints/BOU/53,74/forecast'
+# url = f"https://api.weather.gov/points/34.9513,-92.3809"
+# r = urllib.request.urlopen(url)
+# data = json.loads(r.read().decode(r.info().get_param('charset') or 'utf-8'))
 # print(data)
 
 
 print('<head>')
 print('<title>Weather Map Lab by Your last name</title>')
 print('<script>window.onload = function() {')
-print('document.getElementById("CO").setAttribute("fill", "#CFB87C");')
+# print('document.getElementById("CO").setAttribute("fill", "#CFB87C");')
 
-for statename in us_state_to_abbrev:
-    print(f"if(document.getElementById('{us_state_to_abbrev[statename]}'))")
-    print(f"document.getElementById('{us_state_to_abbrev[statename]}').setAttribute('fill', '#CFB87C');")
-    print(f"console.log('{us_state_to_abbrev[statename]}')")
+
+
+# https://api.weather.gov/points/{latitude},{longitude}
+states_json = json.load(open('cgi-bin/USstates_avg_latLong.json'))
+
+for jsonObject in states_json:
+    state = jsonObject['state']
+    latitude = jsonObject['latitude']
+    longitude = jsonObject['longitude']
+    
+    temp_url = f"https://api.weather.gov/points/{latitude},{longitude}"
+    r = urllib.request.urlopen(url)
+    data = json.loads(r.read().decode(r.info().get_param('charset') or 'utf-8'))
+    
+    full_url = data['properties']['forecast']
+    
+    print(full_url)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    print(f"if(document.getElementById('{us_state_to_abbrev[state]}'))")
+    print(f"document.getElementById('{us_state_to_abbrev[state]}').setAttribute('fill', '#CFB87C');")
+    
+    print(f"console.log('{state}')")
+
+
+# deprecated
+# for statename in us_state_to_abbrev:
+#     print(f"if(document.getElementById('{us_state_to_abbrev[statename]}'))")
+#     print(f"document.getElementById('{us_state_to_abbrev[statename]}').setAttribute('fill', '#CFB87C');")
+    # print(f"console.log('{us_state_to_abbrev[statename]}')")
 
 
 
