@@ -3,6 +3,7 @@
 import urllib.request
 import json
 from us_state_abbrev import us_state_to_abbrev
+import time
 
 
 print("Content-type: text/html")
@@ -23,8 +24,6 @@ print('<title>Weather Map Lab by Your last name</title>')
 print('<script>window.onload = function() {')
 # print('document.getElementById("CO").setAttribute("fill", "#CFB87C");')
 
-
-
 # https://api.weather.gov/points/{latitude},{longitude}
 states_json = json.load(open('cgi-bin/USstates_avg_latLong.json'))
 
@@ -33,32 +32,42 @@ for jsonObject in states_json:
     latitude = jsonObject['latitude']
     longitude = jsonObject['longitude']
     
+        
     temp_url = f"https://api.weather.gov/points/{latitude},{longitude}"
-    r = urllib.request.urlopen(url)
+    r = urllib.request.urlopen(temp_url)
     data = json.loads(r.read().decode(r.info().get_param('charset') or 'utf-8'))
+    
+    # time.sleep(5)
     
     full_url = data['properties']['forecast']
     
-    print(full_url)
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    try:
+        r2 = urllib.request.urlopen(full_url)
+    except:
+        continue
+
+    forecastData = json.loads(r2.read().decode(r2.info().get_param('charset') or 'utf-8'))
+    temperature = forecastData['properties']['periods'][0]['temperature']
+    print(f"console.log('{temperature}')")
+
+    # print(forecastData)
+    # print(f"console.log('{full_url}')")
+    if (temperature < 10):
+        color = "blue"
+    elif (30 > temperature >= 10 ):
+        color = "cyan"
+    elif (50 > temperature >= 30 ):
+        color = "green"
+    elif (80 > temperature >= 50 ):
+        color = "orange"
+    elif (temperature >= 80 ):
+        color = "red"
+        
     print(f"if(document.getElementById('{us_state_to_abbrev[state]}'))")
-    print(f"document.getElementById('{us_state_to_abbrev[state]}').setAttribute('fill', '#CFB87C');")
+    print(f"document.getElementById('{us_state_to_abbrev[state]}').setAttribute('fill', '{color}');")
     
-    print(f"console.log('{state}')")
-
-
+    # time.sleep(5)    
+    
 # deprecated
 # for statename in us_state_to_abbrev:
 #     print(f"if(document.getElementById('{us_state_to_abbrev[statename]}'))")
